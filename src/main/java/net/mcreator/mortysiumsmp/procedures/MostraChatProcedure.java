@@ -51,206 +51,174 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT)
 public class MostraChatProcedure {
+	private static final int FADE_DURATION_MS = 2000;
+	private static final float CHAT_SCALE = 0.025f;
+	private static final float BASE_Y_OFFSET = 0.3f;
+	private static final float LINE_SPACING = 0.3f;
 	private static RenderLevelStageEvent provider = null;
 	private static Map<EntityType, Entity> data = new HashMap<>();
 
-	public static void renderBackground(String texts, double x, double y, double z, float yaw, float pitch, float roll, float scale, int color) {
+	private static int withAlpha(int rgb, int alpha) {
+		int clamped = Math.max(0, Math.min(255, alpha));
+		return (clamped << 24) | (rgb & 0x00FFFFFF);
+	}
+
+	private static int colorFrom(double r, double g, double b) {
+		int ri = Math.max(0, Math.min(255, (int) r));
+		int gi = Math.max(0, Math.min(255, (int) g));
+		int bi = Math.max(0, Math.min(255, (int) b));
+		return (ri << 16) | (gi << 8) | bi;
+	}
+
+	private static int computeFadeAlpha(String fadeStartText, long now) {
+		if (fadeStartText == null || fadeStartText.isEmpty()) return 255;
+		try {
+			long fadeStart = Long.parseLong(fadeStartText);
+			long elapsed = Math.max(0L, now - fadeStart);
+			float progress = Math.min(1f, elapsed / (float) FADE_DURATION_MS);
+			return Math.round(255f * (1f - progress));
+		} catch (NumberFormatException ignored) {
+			return 255;
+		}
+	}
+
+	private static void renderBackground(String text, double x, double y, double z, float yaw, float pitch, float scale, int bgColor) {
 		Minecraft minecraft = Minecraft.getInstance();
 		Font font = minecraft.font;
 		MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
-		Vec3 pos = provider.getCamera().getPosition();
+		Vec3 camPos = provider.getCamera().getPosition();
 		PoseStack poseStack = provider.getPoseStack();
 		poseStack.pushPose();
-		poseStack.translate(x - pos.x(), y - pos.y(), z - pos.z());
+		poseStack.translate(x - camPos.x(), y - camPos.y(), z - camPos.z());
 		poseStack.mulPose(com.mojang.math.Axis.YN.rotationDegrees(yaw));
 		poseStack.mulPose(com.mojang.math.Axis.XN.rotationDegrees(pitch));
-		poseStack.mulPose(com.mojang.math.Axis.ZN.rotationDegrees(roll));
 		poseStack.scale(scale, -scale, 1.0F);
-		poseStack.translate((font.width(texts) - 1) * -0.5F, (font.lineHeight - 1) * -0.5F, 0.0F);
-		Matrix4f matrix4f = poseStack.last().pose();
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		font.drawInBatch(texts, 0.0F, 0.0F, 0, false, matrix4f, bufferSource, Font.DisplayMode.SEE_THROUGH, color, LightTexture.FULL_BRIGHT);
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		poseStack.translate((font.width(text) - 1) * -0.5F, (font.lineHeight - 1) * -0.5F, 0.0F);
+		Matrix4f matrix = poseStack.last().pose();
+		font.drawInBatch(text, 0.0F, 0.0F, 0, false, matrix, bufferSource, Font.DisplayMode.SEE_THROUGH, bgColor, LightTexture.FULL_BRIGHT);
 		poseStack.popPose();
 	}
 
-	public static void renderTexts(String texts, double x, double y, double z, float yaw, float pitch, float roll, float scale, int color, boolean glowing) {
+	private static void renderTexts(String text, double x, double y, double z, float yaw, float pitch, float scale, int textColor) {
+		renderText(text, x, y, z, yaw, pitch, scale, textColor);
+	}
+
+	private static void renderText(String text, double x, double y, double z, float yaw, float pitch, float scale, int textColor) {
 		Minecraft minecraft = Minecraft.getInstance();
 		Font font = minecraft.font;
 		MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
-		Vec3 pos = provider.getCamera().getPosition();
+		Vec3 camPos = provider.getCamera().getPosition();
 		PoseStack poseStack = provider.getPoseStack();
 		poseStack.pushPose();
-		poseStack.translate(x - pos.x(), y - pos.y(), z - pos.z());
+		poseStack.translate(x - camPos.x(), y - camPos.y(), z - camPos.z());
 		poseStack.mulPose(com.mojang.math.Axis.YN.rotationDegrees(yaw));
 		poseStack.mulPose(com.mojang.math.Axis.XN.rotationDegrees(pitch));
-		poseStack.mulPose(com.mojang.math.Axis.ZN.rotationDegrees(roll));
 		poseStack.scale(scale, -scale, 1.0F);
-		poseStack.translate((font.width(texts) - 1) * -0.5F, (font.lineHeight - 1) * -0.5F, -0.02F);
-		Matrix4f matrix4f = poseStack.last().pose();
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		int alpha = (color >> 24) & 0xFF;
-		int colorComAlpha = (alpha << 24) | (color & 0x00FFFFFF);
-		font.drawInBatch(texts, 0.0F, 0.0F, colorComAlpha, false, matrix4f, bufferSource,
-				Font.DisplayMode.NORMAL, 0, LightTexture.FULL_BRIGHT);
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		poseStack.translate((font.width(text) - 1) * -0.5F, (font.lineHeight - 1) * -0.5F, -0.02F);
+		Matrix4f matrix = poseStack.last().pose();
+		font.drawInBatch(text, 0.0F, 0.0F, textColor, false, matrix, bufferSource, Font.DisplayMode.NORMAL, 0, LightTexture.FULL_BRIGHT);
 		poseStack.popPose();
 	}
 
-	private static void renderBackgroundWithOffset(String texts, double x, double y, double z,
-		   float yaw, float pitch, float scale, int color, float offX, float offY) {
+	private static void renderBorderLayer(String text, double x, double y, double z, float yaw, float pitch, float scale, int borderColor, float offX, float offY) {
 		Minecraft minecraft = Minecraft.getInstance();
 		Font font = minecraft.font;
 		MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
-		Vec3 pos = provider.getCamera().getPosition();
+		Vec3 camPos = provider.getCamera().getPosition();
 		PoseStack poseStack = provider.getPoseStack();
 		poseStack.pushPose();
-		poseStack.translate(x - pos.x(), y - pos.y(), z - pos.z());
+		poseStack.translate(x - camPos.x(), y - camPos.y(), z - camPos.z());
 		poseStack.mulPose(com.mojang.math.Axis.YN.rotationDegrees(yaw));
 		poseStack.mulPose(com.mojang.math.Axis.XN.rotationDegrees(pitch));
 		poseStack.scale(scale, -scale, 1.0F);
-		poseStack.translate((font.width(texts) - 1) * -0.5F + offX, (font.lineHeight - 1) * -0.5F + offY, -0.015F);
-		Matrix4f matrix4f = poseStack.last().pose();
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		font.drawInBatch(texts, 0.0F, 0.0F, 0, false, matrix4f, bufferSource, Font.DisplayMode.SEE_THROUGH, color, LightTexture.FULL_BRIGHT);
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		poseStack.translate((font.width(text) - 1) * -0.5F + offX, (font.lineHeight - 1) * -0.5F + offY, -0.015F);
+		Matrix4f matrix = poseStack.last().pose();
+		font.drawInBatch(text, 0.0F, 0.0F, 0, false, matrix, bufferSource, Font.DisplayMode.SEE_THROUGH, borderColor, LightTexture.FULL_BRIGHT);
 		poseStack.popPose();
 	}
+
+	private static void renderBubble(String msg, double px, double py, double pz, float yaw, float pitch, int textRgb, int bgRgb, int alpha) {
+		if (msg == null || msg.isBlank() || alpha <= 0) return;
+		int border = withAlpha(textRgb, alpha);
+		int background = withAlpha(bgRgb, alpha);
+		int text = withAlpha(textRgb, alpha);
+		renderBorderLayer(msg, px, py, pz, yaw, pitch, CHAT_SCALE, border, -1, 0);
+		renderBorderLayer(msg, px, py, pz, yaw, pitch, CHAT_SCALE, border, 1, 0);
+		renderBorderLayer(msg, px, py, pz, yaw, pitch, CHAT_SCALE, border, 0, -1);
+		renderBorderLayer(msg, px, py, pz, yaw, pitch, CHAT_SCALE, border, 0, 1);
+		renderBackground(msg, px, py, pz, yaw, pitch, CHAT_SCALE, background);
+		renderTexts(msg, px, py, pz, yaw, pitch, CHAT_SCALE, text);
+	}
+
 
 	@SubscribeEvent
 	public static void renderModels(RenderLevelStageEvent event) {
 		provider = event;
-		if (provider.getStage() == RenderLevelStageEvent.Stage.AFTER_ENTITIES) {
-			ClientLevel level = Minecraft.getInstance().level;
+		if (provider.getStage() != RenderLevelStageEvent.Stage.AFTER_ENTITIES) return;
+		ClientLevel level = Minecraft.getInstance().level;
+		if (level == null) return;
 
-			// CORREÇÃO PRINCIPAL: itera pelo mapa de dados recebidos via packet,
-			// não por level.players() — que só contém jogadores no raio de render
-			for (Map.Entry<java.util.UUID, MortysiumsmpModVariables.PlayerVariables> entry
-					: ChatBroadcastPacket.CLIENT_CHAT_DATA.entrySet()) {
-
-				java.util.UUID uuid = entry.getKey();
-				MortysiumsmpModVariables.PlayerVariables cap = entry.getValue();
-
-				// Precisa da posição do jogador — busca em level.players() só para isso
-				net.minecraft.world.entity.player.Player player = level.getPlayerByUUID(uuid);
-				if (player == null) continue; // jogador fora do raio de render, pula
-
-				Vec3 pos = player.getPosition(provider.getPartialTick());
-				execute(pos.x(), pos.y(), pos.z(), player, cap);
-			}
-
-			RenderSystem.defaultBlendFunc();
-			RenderSystem.disableBlend();
-			RenderSystem.enableCull();
-			RenderSystem.enableDepthTest();
-			RenderSystem.depthMask(true);
+		for (Map.Entry<java.util.UUID, MortysiumsmpModVariables.PlayerVariables> entry : ChatBroadcastPacket.CLIENT_CHAT_DATA.entrySet()) {
+			java.util.UUID uuid = entry.getKey();
+			MortysiumsmpModVariables.PlayerVariables cap = entry.getValue();
+			net.minecraft.world.entity.player.Player player = level.getPlayerByUUID(uuid);
+			if (player == null) continue;
+			Vec3 pos = player.getPosition(provider.getPartialTick());
+			execute(pos.x(), pos.y(), pos.z(), player, cap);
 		}
+		RenderSystem.defaultBlendFunc();
+		RenderSystem.disableBlend();
+		RenderSystem.enableCull();
+		RenderSystem.enableDepthTest();
+		RenderSystem.depthMask(true);
 	}
 
 	public static void execute(double x, double y, double z, Entity entity) {
-		// Fallback para uso externo — lê do mapa se disponível
-		MortysiumsmpModVariables.PlayerVariables cap =
-			ChatBroadcastPacket.CLIENT_CHAT_DATA.getOrDefault(
-				entity.getUUID(),
-				entity.getCapability(MortysiumsmpModVariables.PLAYER_VARIABLES_CAPABILITY, null)
-					.orElseGet(MortysiumsmpModVariables.PlayerVariables::new)
-			);
+		MortysiumsmpModVariables.PlayerVariables cap = ChatBroadcastPacket.CLIENT_CHAT_DATA.getOrDefault(entity.getUUID(),
+			entity.getCapability(MortysiumsmpModVariables.PLAYER_VARIABLES_CAPABILITY, null).orElseGet(MortysiumsmpModVariables.PlayerVariables::new));
 		execute(x, y, z, entity, cap);
 	}
 
-	private static void execute(double x, double y, double z, Entity entity,
-			MortysiumsmpModVariables.PlayerVariables cap) {
+	private static void execute(double x, double y, double z, Entity entity, MortysiumsmpModVariables.PlayerVariables cap) {
 		if (entity == null) return;
 
-		double R1 = cap.R1, G1 = cap.G1, B1 = cap.B1;
-		double R2 = cap.R2, G2 = cap.G2, B2 = cap.B2;
+		int textRgb = colorFrom(cap.R1, cap.G1, cap.B1);
+		int bgRgb = colorFrom(cap.R2, cap.G2, cap.B2);
 
 		float partialTick = provider.getPartialTick();
 		Vec3 entityPos = entity.getPosition(partialTick);
 		double px = entityPos.x();
 		double pz = entityPos.z();
-		float scale = 0.025f;
 
 		Vec3 camPos = provider.getCamera().getPosition();
 		double dx = camPos.x() - px;
 		double dz = camPos.z() - pz;
 		float yaw = (float) Math.toDegrees(Math.atan2(-dx, dz));
 		float pitch = provider.getCamera().getXRot();
-		float lineHeight = 0.3f;
 		long now = System.currentTimeMillis();
 
-		int fadeAlpha1 = 255;
-		try {
-			if (!cap.fade_chat.isEmpty()) {
-				long fadeStart = Long.parseLong(cap.fade_chat);
-				long elapsed = now - fadeStart;
-				fadeAlpha1 = (int) Math.max(0, 255 - (elapsed / 2000.0f * 255));
-			}
-		} catch (NumberFormatException ignored) {}
+		int alpha1 = computeFadeAlpha(cap.fade_chat, now);
+		int alpha2 = computeFadeAlpha(cap.fade_chat2, now);
+		int alpha3 = computeFadeAlpha(cap.fade_chat3, now);
 
-		int fadeAlpha2 = 255;
-		try {
-			if (!cap.fade_chat2.isEmpty()) {
-				long fadeStart = Long.parseLong(cap.fade_chat2);
-				long elapsed = now - fadeStart;
-				fadeAlpha2 = (int) Math.max(0, 255 - (elapsed / 2000.0f * 255));
-			}
-		} catch (NumberFormatException ignored) {}
-
-		int fadeAlpha3 = 255;
-		try {
-			if (!cap.fade_chat3.isEmpty()) {
-				long fadeStart = Long.parseLong(cap.fade_chat3);
-				long elapsed = now - fadeStart;
-				fadeAlpha3 = (int) Math.max(0, 255 - (elapsed / 2000.0f * 255));
-			}
-		} catch (NumberFormatException ignored) {}
+		int activeCount = (cap.exibindo_chat ? 1 : 0) + (cap.exibindo_chat2 ? 1 : 0) + (cap.exibindo_chat3 ? 1 : 0);
+		int index = 0;
 
 		if (cap.exibindo_chat) {
-			int slot = 0;
-			if (cap.exibindo_chat2) slot++;
-			if (cap.exibindo_chat3) slot++;
-			double py = entityPos.y() + entity.getBbHeight() + 0.4 + (slot * lineHeight);
-			String msg = cap.message;
-			int corBorda1 = fadeAlpha1 << 24 | (int) R1 << 16 | (int) G1 << 8 | (int) B1;
-			int corFundo1 = fadeAlpha1 << 24 | (int) R2 << 16 | (int) G2 << 8 | (int) B2;
-			int corTexto1 = fadeAlpha1 << 24 | (int) R1 << 16 | (int) G1 << 8 | (int) B1;
-			renderBackgroundWithOffset(msg, px, py, pz, yaw, pitch, scale, corBorda1, -1, 0);
-			renderBackgroundWithOffset(msg, px, py, pz, yaw, pitch, scale, corBorda1,  1, 0);
-			renderBackgroundWithOffset(msg, px, py, pz, yaw, pitch, scale, corBorda1,  0, -1);
-			renderBackgroundWithOffset(msg, px, py, pz, yaw, pitch, scale, corBorda1,  0,  1);
-			renderBackground(msg, px, py, pz, yaw, pitch, 0, scale, corFundo1);
-			renderTexts(msg, px, py, pz, yaw, pitch, 0, scale, corTexto1, false);
+			double py = entityPos.y() + entity.getBbHeight() + BASE_Y_OFFSET + ((activeCount - 1 - index) * LINE_SPACING);
+			renderBubble(cap.message, px, py, pz, yaw, pitch, textRgb, bgRgb, alpha1);
+			index++;
 		}
 
 		if (cap.exibindo_chat2) {
-			int slot = 0;
-			if (cap.exibindo_chat3) slot++;
-			double py = entityPos.y() + entity.getBbHeight() + 0.35 + (slot * lineHeight);
-			String msg = cap.message2;
-			int corBorda2 = fadeAlpha2 << 24 | (int) R1 << 16 | (int) G1 << 8 | (int) B1;
-			int corFundo2 = fadeAlpha2 << 24 | (int) R2 << 16 | (int) G2 << 8 | (int) B2;
-			int corTexto2 = fadeAlpha2 << 24 | (int) R1 << 16 | (int) G1 << 8 | (int) B1;
-			renderBackgroundWithOffset(msg, px, py, pz, yaw, pitch, scale, corBorda2, -1, 0);
-			renderBackgroundWithOffset(msg, px, py, pz, yaw, pitch, scale, corBorda2,  1, 0);
-			renderBackgroundWithOffset(msg, px, py, pz, yaw, pitch, scale, corBorda2,  0, -1);
-			renderBackgroundWithOffset(msg, px, py, pz, yaw, pitch, scale, corBorda2,  0,  1);
-			renderBackground(msg, px, py, pz, yaw, pitch, 0, scale, corFundo2);
-			renderTexts(msg, px, py, pz, yaw, pitch, 0, scale, corTexto2, false);
+			double py = entityPos.y() + entity.getBbHeight() + BASE_Y_OFFSET + ((activeCount - 1 - index) * LINE_SPACING);
+			renderBubble(cap.message2, px, py, pz, yaw, pitch, textRgb, bgRgb, alpha2);
+			index++;
 		}
 
 		if (cap.exibindo_chat3) {
-			double py = entityPos.y() + entity.getBbHeight() + 0.3;
-			String msg = cap.message3;
-			int corBorda3 = fadeAlpha3 << 24 | (int) R1 << 16 | (int) G1 << 8 | (int) B1;
-			int corFundo3 = fadeAlpha3 << 24 | (int) R2 << 16 | (int) G2 << 8 | (int) B2;
-			int corTexto3 = fadeAlpha3 << 24 | (int) R1 << 16 | (int) G1 << 8 | (int) B1;
-			renderBackgroundWithOffset(msg, px, py, pz, yaw, pitch, scale, corBorda3, -1, 0);
-			renderBackgroundWithOffset(msg, px, py, pz, yaw, pitch, scale, corBorda3,  1, 0);
-			renderBackgroundWithOffset(msg, px, py, pz, yaw, pitch, scale, corBorda3,  0, -1);
-			renderBackgroundWithOffset(msg, px, py, pz, yaw, pitch, scale, corBorda3,  0,  1);
-			renderBackground(msg, px, py, pz, yaw, pitch, 0, scale, corFundo3);
-			renderTexts(msg, px, py, pz, yaw, pitch, 0, scale, corTexto3, false);
+			double py = entityPos.y() + entity.getBbHeight() + BASE_Y_OFFSET + ((activeCount - 1 - index) * LINE_SPACING);
+			renderBubble(cap.message3, px, py, pz, yaw, pitch, textRgb, bgRgb, alpha3);
 		}
 
 		Minecraft.getInstance().renderBuffers().bufferSource().endBatch();
