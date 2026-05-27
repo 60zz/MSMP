@@ -1,0 +1,42 @@
+{
+  "castlevania_forro": {
+    "sounds": [
+      {
+        "name": "mortysiumsmp:castlevania_forro",
+        "stream": true
+      }
+    ]
+  },
+  "forbidden_fruit": {
+    "sounds": [
+      {
+        "name": "mortysiumsmp:forbiddenfruit",
+        "stream": true
+      }
+    ]
+  },
+  "coelha": {
+    "sounds": [
+      {
+        "name": "mortysiumsmp:coelha",
+        "stream": true
+      }
+    ]
+  },
+  "yang": {
+    "sounds": [
+      {
+        "name": "mortysiumsmp:yang",
+        "stream": true
+      }
+    ]
+  },
+  "baile": {
+    "sounds": [
+      {
+        "name": "mortysiumsmp:baile",
+        "stream": true
+      }
+    ]
+  }
+}

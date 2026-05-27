@@ -1,0 +1,1016 @@
+{
+  "mod_elements": [
+    {
+      "name": "MSMP",
+      "type": "command",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "msmp",
+      "metadata": {
+        "files": [
+          "src/main/java/net/mcreator/mortysiumsmp/command/MSMPCommand.java"
+        ]
+      },
+      "path": "~/Comando"
+    },
+    {
+      "name": "FrioExtremo",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "frio_extremo",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "dimension",
+            "type": "dimensiontype"
+          },
+          {
+            "name": "world",
+            "type": "world"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/mortysiumsmp/procedures/FrioExtremoProcedure.java"
+        ]
+      },
+      "path": "~/MSMP_V1/Climatico/Acida"
+    },
+    {
+      "name": "SetTornado",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "set_tornado",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "arguments",
+            "type": "cmdcontext"
+          },
+          {
+            "name": "world",
+            "type": "world"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/mortysiumsmp/procedures/SetTornadoProcedure.java"
+        ]
+      },
+      "path": "~/Comando"
+    },
+    {
+      "name": "SetTerremoto",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "set_terremoto",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "arguments",
+            "type": "cmdcontext"
+          },
+          {
+            "name": "world",
+            "type": "world"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/mortysiumsmp/procedures/SetTerremotoProcedure.java"
+        ]
+      },
+      "path": "~/Comando"
+    },
+    {
+      "name": "SetChuvaAcida",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "set_chuva_acida",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "arguments",
+            "type": "cmdcontext"
+          },
+          {
+            "name": "world",
+            "type": "world"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/mortysiumsmp/procedures/SetChuvaAcidaProcedure.java"
+        ]
+      },
+      "path": "~/Comando"
+    },
+    {
+      "name": "SetCalor",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "set_calor",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "arguments",
+            "type": "cmdcontext"
+          },
+          {
+            "name": "world",
+            "type": "world"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/mortysiumsmp/procedures/SetCalorProcedure.java"
+        ]
+      },
+      "path": "~/Comando"
+    },
+    {
+      "name": "SetFrio",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "set_frio",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "arguments",
+            "type": "cmdcontext"
+          },
+          {
+            "name": "world",
+            "type": "world"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/mortysiumsmp/procedures/SetFrioProcedure.java"
+        ]
+      },
+      "path": "~/Comando"
+    },
+    {
+      "name": "EffectCalorExtremo",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "effect_calor_extremo",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          },
+          {
+            "name": "world",
+            "type": "world"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/mortysiumsmp/procedures/EffectCalorExtremoProcedure.java"
+        ]
+      },
+      "path": "~/MSMP_V1/Climatico/CalorExtremo"
+    },
+    {
+      "name": "BlocoColocadoCalor",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "bloco_colocado_calor",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          },
+          {
+            "name": "x",
+            "type": "number"
+          },
+          {
+            "name": "y",
+            "type": "number"
+          },
+          {
+            "name": "z",
+            "type": "number"
+          },
+          {
+            "name": "world",
+            "type": "world"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/mortysiumsmp/procedures/BlocoColocadoCalorProcedure.java"
+        ]
+      },
+      "path": "~/MSMP_V1/Climatico/CalorExtremo"
+    },
+    {
+      "name": "SetupDimensions",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "setup_dimensions",
+      "metadata": {
+        "dependencies": [],
+        "files": [
+          "src/main/java/net/mcreator/mortysiumsmp/procedures/SetupDimensionsProcedure.java"
+        ]
+      },
+      "path": "~/MSMP_V1/Climatico/Frio"
+    },
+    {
+      "name": "RenderizaGelo",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "renderiza_gelo",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "dimension",
+            "type": "dimensiontype"
+          },
+          {
+            "name": "world",
+            "type": "world"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/mortysiumsmp/procedures/RenderizaGeloProcedure.java"
+        ]
+      },
+      "path": "~/MSMP_V1/Climatico/Frio"
+    },
+    {
+      "name": "CongelaAguaAndando",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": true,
+      "registry_name": "congela_agua_andando",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "x",
+            "type": "number"
+          },
+          {
+            "name": "y",
+            "type": "number"
+          },
+          {
+            "name": "z",
+            "type": "number"
+          },
+          {
+            "name": "world",
+            "type": "world"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/mortysiumsmp/procedures/CongelaAguaAndandoProcedure.java"
+        ]
+      },
+      "path": "~/MSMP_V1/Climatico/Frio"
+    },
+    {
+      "name": "WeatherSnow",
+      "type": "mixin",
+      "compiles": true,
+      "locked_code": true,
+      "registry_name": "weather_snow",
+      "metadata": {
+        "files": [
+          "src/main/java/net/mcreator/mortysiumsmp/mixins/WeatherSnowMixin.java"
+        ]
+      },
+      "path": "~/MSMP_V1/Climatico/Frio"
+    },
+    {
+      "name": "SnowParticleHandler",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": true,
+      "registry_name": "snow_particle_handler",
+      "metadata": {
+        "dependencies": [],
+        "files": [
+          "src/main/java/net/mcreator/mortysiumsmp/procedures/SnowParticleHandlerProcedure.java"
+        ]
+      },
+      "path": "~/MSMP_V1/Climatico/Frio"
+    },
+    {
+      "name": "TomaDano",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "toma_dano",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          },
+          {
+            "name": "x",
+            "type": "number"
+          },
+          {
+            "name": "y",
+            "type": "number"
+          },
+          {
+            "name": "z",
+            "type": "number"
+          },
+          {
+            "name": "world",
+            "type": "world"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/mortysiumsmp/procedures/TomaDanoProcedure.java"
+        ]
+      },
+      "path": "~/MSMP_V1/Climatico/Frio"
+    },
+    {
+      "name": "Irradiated",
+      "type": "potioneffect",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "irradiated",
+      "metadata": {
+        "files": [
+          "src/main/java/net/mcreator/mortysiumsmp/potion/IrradiatedMobEffect.java"
+        ]
+      },
+      "path": "~/MSMP_V1/Radiacao"
+    },
+    {
+      "name": "AguaContaminada",
+      "type": "fluid",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "agua_contaminada",
+      "metadata": {
+        "files": [
+          "src/main/resources/assets/mortysiumsmp/models/item/agua_contaminada_bucket.json",
+          "src/main/java/net/mcreator/mortysiumsmp/fluid/AguaContaminadaFluid.java",
+          "src/main/java/net/mcreator/mortysiumsmp/item/AguaContaminadaItem.java",
+          "src/main/resources/assets/mortysiumsmp/blockstates/agua_contaminada.json",
+          "src/main/java/net/mcreator/mortysiumsmp/fluid/types/AguaContaminadaFluidType.java",
+          "src/main/resources/assets/mortysiumsmp/models/block/agua_contaminada.json",
+          "src/main/java/net/mcreator/mortysiumsmp/block/AguaContaminadaBlock.java"
+        ]
+      },
+      "path": "~/MSMP_V1/AguaContaminada"
+    },
+    {
+      "name": "AguaContaminadaMobplayerCollidesBlock",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "agua_contaminada_mobplayer_collides_block",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/mortysiumsmp/procedures/AguaContaminadaMobplayerCollidesBlockProcedure.java"
+        ]
+      },
+      "path": "~/MSMP_V1/AguaContaminada"
+    },
+    {
+      "name": "IrradiatedOnEffectActiveTick",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "irradiated_on_effect_active_tick",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          },
+          {
+            "name": "world",
+            "type": "world"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/mortysiumsmp/procedures/IrradiatedOnEffectActiveTickProcedure.java"
+        ]
+      },
+      "path": "~/MSMP_V1/Radiacao"
+    },
+    {
+      "name": "Castlevania",
+      "type": "item",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "castlevania",
+      "metadata": {
+        "files": [
+          "src/main/java/net/mcreator/mortysiumsmp/item/CastlevaniaItem.java",
+          "src/main/resources/assets/mortysiumsmp/models/item/castlevania.json"
+        ]
+      },
+      "path": "~/MSMP_V1/Disco"
+    },
+    {
+      "name": "ForbiddenFruit",
+      "type": "item",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "forbidden_fruit",
+      "metadata": {
+        "files": [
+          "src/main/resources/assets/mortysiumsmp/models/item/forbidden_fruit.json",
+          "src/main/java/net/mcreator/mortysiumsmp/item/ForbiddenFruitItem.java"
+        ]
+      },
+      "path": "~/MSMP_V1/Disco"
+    },
+    {
+      "name": "Baile",
+      "type": "item",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "baile",
+      "metadata": {
+        "files": [
+          "src/main/java/net/mcreator/mortysiumsmp/item/BaileItem.java",
+          "src/main/resources/assets/mortysiumsmp/models/item/baile.json"
+        ]
+      },
+      "path": "~/MSMP_V1/Disco"
+    },
+    {
+      "name": "Coelha",
+      "type": "item",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "coelha",
+      "metadata": {
+        "files": [
+          "src/main/resources/assets/mortysiumsmp/models/item/coelha.json",
+          "src/main/java/net/mcreator/mortysiumsmp/item/CoelhaItem.java"
+        ]
+      },
+      "path": "~/MSMP_V1/Disco"
+    },
+    {
+      "name": "Yang",
+      "type": "item",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "yang",
+      "metadata": {
+        "files": [
+          "src/main/java/net/mcreator/mortysiumsmp/item/YangItem.java",
+          "src/main/resources/assets/mortysiumsmp/models/item/yang.json"
+        ]
+      },
+      "path": "~/MSMP_V1/Disco"
+    },
+    {
+      "name": "Morte",
+      "type": "biome",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "morte",
+      "metadata": {
+        "files": [
+          "src/main/resources/data/mortysiumsmp/worldgen/biome/morte.json"
+        ]
+      },
+      "path": "~/MSMP_V1/Biomas"
+    },
+    {
+      "name": "Vida",
+      "type": "biome",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "vida",
+      "metadata": {
+        "files": [
+          "src/main/resources/data/mortysiumsmp/worldgen/biome/vida.json"
+        ]
+      },
+      "path": "~/MSMP_V1/Biomas"
+    },
+    {
+      "name": "PlayerSentMessage",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": true,
+      "registry_name": "player_sent_message",
+      "metadata": {
+        "dependencies": [],
+        "files": [
+          "src/main/java/net/mcreator/mortysiumsmp/procedures/PlayerSentMessageProcedure.java"
+        ]
+      },
+      "path": "~/ChatLogs"
+    },
+    {
+      "name": "RenderChat",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": true,
+      "registry_name": "render_chat",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          },
+          {
+            "name": "text",
+            "type": "string"
+          },
+          {
+            "name": "world",
+            "type": "world"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/mortysiumsmp/procedures/RenderChatProcedure.java"
+        ]
+      },
+      "path": "~/ChatTest/Chat"
+    },
+    {
+      "name": "MostraChat",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": true,
+      "registry_name": "mostra_chat",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          },
+          {
+            "name": "x",
+            "type": "number"
+          },
+          {
+            "name": "y",
+            "type": "number"
+          },
+          {
+            "name": "z",
+            "type": "number"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/mortysiumsmp/procedures/MostraChatProcedure.java"
+        ]
+      },
+      "path": "~/ChatTest"
+    },
+    {
+      "name": "Setmessagecolor",
+      "type": "command",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "setmessagecolor",
+      "metadata": {
+        "files": [
+          "src/main/java/net/mcreator/mortysiumsmp/command/SetmessagecolorCommand.java"
+        ]
+      },
+      "path": "~/ChatTest/Comandos"
+    },
+    {
+      "name": "RGBColor1",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "rgb_color_1",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "arguments",
+            "type": "cmdcontext"
+          },
+          {
+            "name": "entity",
+            "type": "entity"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/mortysiumsmp/procedures/RGBColor1Procedure.java"
+        ]
+      },
+      "path": "~/ChatTest/Comandos"
+    },
+    {
+      "name": "RGBColor2",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "rgb_color_2",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "arguments",
+            "type": "cmdcontext"
+          },
+          {
+            "name": "entity",
+            "type": "entity"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/mortysiumsmp/procedures/RGBColor2Procedure.java"
+        ]
+      },
+      "path": "~/ChatTest/Comandos"
+    },
+    {
+      "name": "EntraRemoveChats",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "entra_remove_chats",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/mortysiumsmp/procedures/EntraRemoveChatsProcedure.java"
+        ]
+      },
+      "path": "~/ChatTest/Chat"
+    },
+    {
+      "name": "GlobalChatProcedure",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "global_chat_procedure",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "arguments",
+            "type": "cmdcontext"
+          },
+          {
+            "name": "entity",
+            "type": "entity"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/mortysiumsmp/procedures/GlobalChatProcedureProcedure.java"
+        ]
+      },
+      "path": "~/ChatTest/Comandos"
+    },
+    {
+      "name": "SetGlobalChat",
+      "type": "command",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "set_global_chat",
+      "metadata": {
+        "files": [
+          "src/main/java/net/mcreator/mortysiumsmp/command/SetGlobalChatCommand.java"
+        ]
+      },
+      "path": "~/ChatTest/Comandos"
+    }
+  ],
+  "variable_elements": [
+    {
+      "name": "Tornado",
+      "type": "logic",
+      "scope": "map",
+      "value": "false"
+    },
+    {
+      "name": "Terremotos",
+      "type": "logic",
+      "scope": "map",
+      "value": "false"
+    },
+    {
+      "name": "R2",
+      "type": "number",
+      "scope": "player_persistent",
+      "value": "0.0"
+    },
+    {
+      "name": "R1",
+      "type": "number",
+      "scope": "player_persistent",
+      "value": "255.0"
+    },
+    {
+      "name": "message3",
+      "type": "string",
+      "scope": "player_persistent",
+      "value": ""
+    },
+    {
+      "name": "message2",
+      "type": "string",
+      "scope": "player_persistent",
+      "value": ""
+    },
+    {
+      "name": "message",
+      "type": "string",
+      "scope": "player_persistent",
+      "value": ""
+    },
+    {
+      "name": "G2",
+      "type": "number",
+      "scope": "player_persistent",
+      "value": "0.0"
+    },
+    {
+      "name": "G1",
+      "type": "number",
+      "scope": "player_persistent",
+      "value": "255.0"
+    },
+    {
+      "name": "FrioExtremo",
+      "type": "logic",
+      "scope": "map",
+      "value": "false"
+    },
+    {
+      "name": "fade_chat3",
+      "type": "string",
+      "scope": "player_persistent",
+      "value": ""
+    },
+    {
+      "name": "fade_chat2",
+      "type": "string",
+      "scope": "player_persistent",
+      "value": ""
+    },
+    {
+      "name": "fade_chat",
+      "type": "string",
+      "scope": "player_persistent",
+      "value": ""
+    },
+    {
+      "name": "exibindo_chat3",
+      "type": "logic",
+      "scope": "player_persistent",
+      "value": "false"
+    },
+    {
+      "name": "exibindo_chat2",
+      "type": "logic",
+      "scope": "player_persistent",
+      "value": "false"
+    },
+    {
+      "name": "exibindo_chat",
+      "type": "logic",
+      "scope": "player_persistent",
+      "value": "false"
+    },
+    {
+      "name": "ChuvaAcida",
+      "type": "logic",
+      "scope": "map",
+      "value": "false"
+    },
+    {
+      "name": "chat_global",
+      "type": "logic",
+      "scope": "player_persistent",
+      "value": "false"
+    },
+    {
+      "name": "CalorExtremo",
+      "type": "logic",
+      "scope": "map",
+      "value": "false"
+    },
+    {
+      "name": "B2",
+      "type": "number",
+      "scope": "player_persistent",
+      "value": "0.0"
+    },
+    {
+      "name": "B1",
+      "type": "number",
+      "scope": "player_persistent",
+      "value": "0.0"
+    }
+  ],
+  "sound_elements": [
+    {
+      "name": "castlevania_forro",
+      "files": [
+        "castlevania_forro"
+      ],
+      "category": "record",
+      "subtitle": ""
+    },
+    {
+      "name": "forbidden_fruit",
+      "files": [
+        "forbiddenfruit"
+      ],
+      "category": "record",
+      "subtitle": ""
+    },
+    {
+      "name": "coelha",
+      "files": [
+        "coelha"
+      ],
+      "category": "record",
+      "subtitle": ""
+    },
+    {
+      "name": "yang",
+      "files": [
+        "yang"
+      ],
+      "category": "record",
+      "subtitle": ""
+    },
+    {
+      "name": "baile",
+      "files": [
+        "baile"
+      ],
+      "category": "record",
+      "subtitle": ""
+    }
+  ],
+  "tag_elements": {
+    "ITEMS:minecraft:evapora_calor": [
+      "Items.WATER_BUCKET",
+      "Items.PUFFERFISH_BUCKET",
+      "Items.SALMON_BUCKET",
+      "Items.COD_BUCKET",
+      "Items.TROPICAL_FISH_BUCKET",
+      "Items.AXOLOTL_BUCKET",
+      "Items.TADPOLE_BUCKET",
+      "Items.POWDER_SNOW_BUCKET"
+    ],
+    "BLOCKS:minecraft:replaceable": [
+      "~CUSTOM:AguaContaminada"
+    ],
+    "ITEMS:minecraft:music_discs": [
+      "~CUSTOM:Yang",
+      "~CUSTOM:Coelha",
+      "~CUSTOM:Baile",
+      "~CUSTOM:ForbiddenFruit",
+      "~CUSTOM:Castlevania"
+    ]
+  },
+  "tab_element_order": {},
+  "language_map": {
+    "en_us": {
+      "effect.mortysiumsmp.irradiated": "Radiação",
+      "fluid.mortysiumsmp.agua_contaminada": "Água Contaminada",
+      "block.mortysiumsmp.agua_contaminada": "Água Contaminada",
+      "fluid_type.mortysiumsmp.agua_contaminada": "Água Contaminada",
+      "item.mortysiumsmp.agua_contaminada_bucket": "Água Contaminada Bucket",
+      "subtitles.castlevania_forro": "",
+      "subtitles.forbidden_fruit": "",
+      "item.mortysiumsmp.castlevania": "Music Disc",
+      "item.mortysiumsmp.castlevania.desc": "Castlevania - Forró",
+      "item.mortysiumsmp.forbidden_fruit.desc": "Forbidden Fruit",
+      "item.mortysiumsmp.forbidden_fruit": "Music Disc",
+      "item.mortysiumsmp.baile": "Music Disc",
+      "item.mortysiumsmp.baile.desc": "Baile",
+      "item.mortysiumsmp.coelha": "Music Disc",
+      "item.mortysiumsmp.coelha.desc": "Coelha",
+      "item.mortysiumsmp.yang": "Music Disc",
+      "item.mortysiumsmp.yang.desc": "Yang",
+      "subtitles.coelha": "",
+      "subtitles.yang": "",
+      "subtitles.baile": "",
+      "biome.mortysiumsmp.morte": "Morte",
+      "biome.mortysiumsmp.vida": "Vida"
+    }
+  },
+  "metadata": {
+    "files": [
+      "src/main/resources/mixins.mortysiumsmp.json",
+      "src/main/resources/assets/mortysiumsmp/sounds.json",
+      "src/main/java/net/mcreator/mortysiumsmp/init/MortysiumsmpModSounds.java",
+      "src/main/resources/pack.mcmeta",
+      "src/main/java/net/mcreator/mortysiumsmp/init/MortysiumsmpModTabs.java",
+      "src/main/java/net/mcreator/mortysiumsmp/MortysiumsmpMod.java",
+      "src/main/java/net/mcreator/mortysiumsmp/network/MortysiumsmpModVariables.java",
+      "src/main/resources/META-INF/mods.toml",
+      "src/main/java/net/mcreator/mortysiumsmp/init/MortysiumsmpModFluidTypes.java",
+      "src/main/java/net/mcreator/mortysiumsmp/init/MortysiumsmpModFluids.java",
+      "src/main/java/net/mcreator/mortysiumsmp/init/MortysiumsmpModMobEffects.java",
+      "src/main/java/net/mcreator/mortysiumsmp/init/MortysiumsmpModBlocks.java",
+      "src/main/java/net/mcreator/mortysiumsmp/init/MortysiumsmpModItems.java"
+    ]
+  },
+  "foldersRoot": {
+    "name": "~",
+    "children": [
+      {
+        "name": "Comando",
+        "children": []
+      },
+      {
+        "name": "MSMP_V1",
+        "children": [
+          {
+            "name": "Radiacao",
+            "children": []
+          },
+          {
+            "name": "Climatico",
+            "children": [
+              {
+                "name": "Frio",
+                "children": []
+              },
+              {
+                "name": "Acida",
+                "children": []
+              },
+              {
+                "name": "CalorExtremo",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "AguaContaminada",
+            "children": []
+          },
+          {
+            "name": "Disco",
+            "children": []
+          },
+          {
+            "name": "Biomas",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "ChatLogs",
+        "children": []
+      },
+      {
+        "name": "ChatTest",
+        "children": [
+          {
+            "name": "Comandos",
+            "children": []
+          },
+          {
+            "name": "Chat",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "workspaceSettings": {
+    "modid": "mortysiumsmp",
+    "modName": "MortysiumSMP",
+    "version": "1.4.8",
+    "author": "60zz",
+    "websiteURL": "https://discord.gg/ssmp",
+    "license": "All Rights Reserved",
+    "serverSideOnly": false,
+    "requiredMods": [],
+    "dependencies": [],
+    "dependants": [],
+    "mcreatorDependencies": [],
+    "currentGenerator": "forge-1.20.1",
+    "credits": "Mod desenvolvido para MortysiumSMP, criado por 60z/Qnin. Contato em https://discord.gg/ssmp",
+    "modElementsPackage": "net.mcreator.mortysiumsmp"
+  },
+  "mcreatorVersion": 202500228610
+}

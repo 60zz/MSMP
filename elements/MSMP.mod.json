@@ -1,0 +1,10 @@
+{
+  "_fv": 79,
+  "_type": "command",
+  "definition": {
+    "commandName": "msmp",
+    "type": "STANDARD",
+    "permissionLevel": "4",
+    "argsxml": "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"args_start\" deletable=\"false\" x=\"40\" y=\"40\"><next><block type=\"literal\"><field name=\"name\">climatico</field><statement name=\"args\"><block type=\"literal\"><field name=\"name\">tornado</field><statement name=\"args\"><block type=\"logic\"><field name=\"name\">value</field><statement name=\"args\"><block type=\"call_procedure\"><field name=\"procedure\">SetTornado</field></block></statement></block></statement><next><block type=\"literal\"><field name=\"name\">terremoto</field><statement name=\"args\"><block type=\"logic\"><field name=\"name\">value</field><statement name=\"args\"><block type=\"call_procedure\"><field name=\"procedure\">SetTerremoto</field></block></statement></block></statement><next><block type=\"literal\"><field name=\"name\">acida</field><statement name=\"args\"><block type=\"logic\"><field name=\"name\">value</field><statement name=\"args\"><block type=\"call_procedure\"><field name=\"procedure\">SetChuvaAcida</field></block></statement></block></statement><next><block type=\"literal\"><field name=\"name\">calor</field><statement name=\"args\"><block type=\"logic\"><field name=\"name\">value</field><statement name=\"args\"><block type=\"call_procedure\"><field name=\"procedure\">SetCalor</field></block></statement></block></statement><next><block type=\"literal\"><field name=\"name\">frio</field><statement name=\"args\"><block type=\"logic\"><field name=\"name\">value</field><statement name=\"args\"><block type=\"call_procedure\"><field name=\"procedure\">SetFrio</field></block></statement></block></statement></block></next></block></next></block></next></block></next></block></statement></block></next></block></xml>"
+  }
+}

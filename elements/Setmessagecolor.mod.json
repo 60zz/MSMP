@@ -1,0 +1,10 @@
+{
+  "_fv": 79,
+  "_type": "command",
+  "definition": {
+    "commandName": "setmessagecolor",
+    "type": "STANDARD",
+    "permissionLevel": "4",
+    "argsxml": "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"args_start\" deletable=\"false\" x=\"40\" y=\"40\"><next><block type=\"literal\"><field name=\"name\">Contorno</field><statement name=\"args\"><block type=\"number_min_max\"><field name=\"name\">R</field><field name=\"min\">0</field><field name=\"max\">255</field><statement name=\"args\"><block type=\"number_min_max\"><field name=\"name\">G</field><field name=\"min\">0</field><field name=\"max\">255</field><statement name=\"args\"><block type=\"number_min_max\"><field name=\"name\">B</field><field name=\"min\">0</field><field name=\"max\">255</field><statement name=\"args\"><block type=\"call_procedure\"><field name=\"procedure\">RGBColor2</field></block></statement></block></statement></block></statement></block></statement><next><block type=\"literal\"><field name=\"name\">Fundo</field><statement name=\"args\"><block type=\"number_min_max\"><field name=\"name\">R</field><field name=\"min\">0</field><field name=\"max\">255</field><statement name=\"args\"><block type=\"number_min_max\"><field name=\"name\">G</field><field name=\"min\">0</field><field name=\"max\">255</field><statement name=\"args\"><block type=\"number_min_max\"><field name=\"name\">B</field><field name=\"min\">0</field><field name=\"max\">255</field><statement name=\"args\"><block type=\"call_procedure\"><field name=\"procedure\">RGBColor1</field></block></statement></block></statement></block></statement></block></statement></block></next></block></next></block></xml>"
+  }
+}
