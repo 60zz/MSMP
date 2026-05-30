@@ -644,7 +644,7 @@
       "name": "EntraRemoveChats",
       "type": "procedure",
       "compiles": true,
-      "locked_code": false,
+      "locked_code": true,
       "registry_name": "entra_remove_chats",
       "metadata": {
         "dependencies": [
@@ -999,7 +999,7 @@
   "workspaceSettings": {
     "modid": "mortysiumsmp",
     "modName": "MortysiumSMP",
-    "version": "1.4.8",
+    "version": "1.7.2",
     "author": "60zz",
     "websiteURL": "https://discord.gg/ssmp",
     "license": "All Rights Reserved",

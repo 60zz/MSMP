@@ -1,143 +1,134 @@
 package net.mcreator.mortysiumsmp.procedures;
 
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.event.ServerChatEvent;
+import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.LevelAccessor;
 
-import net.mcreator.mortysiumsmp.network.MortysiumsmpModVariables;
-import net.mcreator.mortysiumsmp.network.ChatBroadcastPacket;
 import net.mcreator.mortysiumsmp.MortysiumsmpMod;
+import net.mcreator.mortysiumsmp.network.ChatBroadcastPacket;
+import net.mcreator.mortysiumsmp.network.MortysiumsmpModVariables;
 
 import javax.annotation.Nullable;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Mod.EventBusSubscriber
 public class RenderChatProcedure {
-	@SubscribeEvent
-	public static void onChat(ServerChatEvent event) {
-		execute(event, event.getPlayer().level(), event.getPlayer(), event.getRawText());
-	}
 
-	public static void execute(LevelAccessor world, Entity entity, String text) {
-		execute(null, world, entity, text);
-	}
+    private static final int MESSAGE_CHUNK_SIZE = 42;
+    private static final int CLEAR_DELAY_TICKS  = 160;
 
-	private static void execute(@Nullable Event event, LevelAccessor world, Entity entity, String text) {
-		if (entity == null || text == null)
-			return;
+    // Contador por jogador — garante IDs únicos sem depender de nanoTime ou strings sincronizadas
+    private static final Map<UUID, AtomicLong> COUNTERS = new ConcurrentHashMap<>();
 
-		java.util.List<String> partes = new java.util.ArrayList<>();
-		String restante = text;
-		while (restante.length() > 33) {
-			partes.add(restante.substring(0, 33));
-			restante = restante.substring(33);
-		}
-		if (!restante.isEmpty()) partes.add(restante);
+    private static long nextId(UUID uuid) {
+        return COUNTERS.computeIfAbsent(uuid, k -> new AtomicLong(0)).incrementAndGet();
+    }
 
-		for (String parte : partes) {
-			enviarParte(entity, parte);
-		}
+    @SubscribeEvent
+    public static void onChat(ServerChatEvent event) {
+        execute(event, event.getPlayer().level(), event.getPlayer(), event.getRawText());
+    }
 
-		if ((entity.getCapability(MortysiumsmpModVariables.PLAYER_VARIABLES_CAPABILITY, null).orElseGet(MortysiumsmpModVariables.PlayerVariables::new)).chat_global == false) {
-			if (event != null && event.isCancelable()) {
-				event.setCanceled(true);
-			}
-		}
-	}
+    public static void execute(LevelAccessor world, Entity entity, String text) {
+        execute(null, world, entity, text);
+    }
 
-	private static void enviarParte(Entity entity, String text) {
-		if ((entity.getCapability(MortysiumsmpModVariables.PLAYER_VARIABLES_CAPABILITY, null).orElseGet(MortysiumsmpModVariables.PlayerVariables::new)).exibindo_chat == false) {
-			entity.getCapability(MortysiumsmpModVariables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
-				capability.message = " " + text + " ";
-				capability.exibindo_chat = true;
-				capability.fade_chat = "";
-				capability.syncPlayerVariables(entity);
-			});
-			// broadcast já usa PacketDistributor.ALL — envia para todos
-			if (entity instanceof ServerPlayer sp) ChatBroadcastPacket.broadcast(sp);
+    private static void execute(@Nullable Event event, LevelAccessor world, Entity entity, String text) {
+        if (entity == null || text == null) return;
 
-			MortysiumsmpMod.queueServerWork(160, () -> {
-				if ((" " + text + " ").equals((entity.getCapability(MortysiumsmpModVariables.PLAYER_VARIABLES_CAPABILITY, null).orElseGet(MortysiumsmpModVariables.PlayerVariables::new)).message)) {
-					entity.getCapability(MortysiumsmpModVariables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
-						capability.fade_chat = String.valueOf(System.currentTimeMillis());
-						capability.syncPlayerVariables(entity);
-					});
-					if (entity instanceof ServerPlayer sp) ChatBroadcastPacket.broadcast(sp);
-				}
-			});
-			MortysiumsmpMod.queueServerWork(200, () -> {
-				if ((" " + text + " ").equals((entity.getCapability(MortysiumsmpModVariables.PLAYER_VARIABLES_CAPABILITY, null).orElseGet(MortysiumsmpModVariables.PlayerVariables::new)).message)) {
-					entity.getCapability(MortysiumsmpModVariables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
-						capability.exibindo_chat = false;
-						capability.message = "";
-						capability.fade_chat = "";
-						capability.syncPlayerVariables(entity);
-					});
-					if (entity instanceof ServerPlayer sp) ChatBroadcastPacket.broadcast(sp);
-				}
-			});
-		} else if ((entity.getCapability(MortysiumsmpModVariables.PLAYER_VARIABLES_CAPABILITY, null).orElseGet(MortysiumsmpModVariables.PlayerVariables::new)).exibindo_chat2 == false) {
-			entity.getCapability(MortysiumsmpModVariables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
-				capability.message2 = " " + text + " ";
-				capability.exibindo_chat2 = true;
-				capability.fade_chat2 = "";
-				capability.syncPlayerVariables(entity);
-			});
-			if (entity instanceof ServerPlayer sp) ChatBroadcastPacket.broadcast(sp);
+        for (String part : splitMessage(text)) {
+            enqueueChatPart(entity, part);
+        }
 
-			MortysiumsmpMod.queueServerWork(160, () -> {
-				if ((" " + text + " ").equals((entity.getCapability(MortysiumsmpModVariables.PLAYER_VARIABLES_CAPABILITY, null).orElseGet(MortysiumsmpModVariables.PlayerVariables::new)).message2)) {
-					entity.getCapability(MortysiumsmpModVariables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
-						capability.fade_chat2 = String.valueOf(System.currentTimeMillis());
-						capability.syncPlayerVariables(entity);
-					});
-					if (entity instanceof ServerPlayer sp) ChatBroadcastPacket.broadcast(sp);
-				}
-			});
-			MortysiumsmpMod.queueServerWork(200, () -> {
-				if ((" " + text + " ").equals((entity.getCapability(MortysiumsmpModVariables.PLAYER_VARIABLES_CAPABILITY, null).orElseGet(MortysiumsmpModVariables.PlayerVariables::new)).message2)) {
-					entity.getCapability(MortysiumsmpModVariables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
-						capability.exibindo_chat2 = false;
-						capability.message2 = "";
-						capability.fade_chat2 = "";
-						capability.syncPlayerVariables(entity);
-					});
-					if (entity instanceof ServerPlayer sp) ChatBroadcastPacket.broadcast(sp);
-				}
-			});
-		} else if ((entity.getCapability(MortysiumsmpModVariables.PLAYER_VARIABLES_CAPABILITY, null).orElseGet(MortysiumsmpModVariables.PlayerVariables::new)).exibindo_chat3 == false) {
-			entity.getCapability(MortysiumsmpModVariables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
-				capability.message3 = " " + text + " ";
-				capability.exibindo_chat3 = true;
-				capability.fade_chat3 = "";
-				capability.syncPlayerVariables(entity);
-			});
-			if (entity instanceof ServerPlayer sp) ChatBroadcastPacket.broadcast(sp);
+        if (!(entity.getCapability(MortysiumsmpModVariables.PLAYER_VARIABLES_CAPABILITY, null)
+                .orElseGet(MortysiumsmpModVariables.PlayerVariables::new)).chat_global) {
+            if (event != null && event.isCancelable()) {
+                event.setCanceled(true);
+            }
+        }
+    }
 
-			MortysiumsmpMod.queueServerWork(160, () -> {
-				if ((" " + text + " ").equals((entity.getCapability(MortysiumsmpModVariables.PLAYER_VARIABLES_CAPABILITY, null).orElseGet(MortysiumsmpModVariables.PlayerVariables::new)).message3)) {
-					entity.getCapability(MortysiumsmpModVariables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
-						capability.fade_chat3 = String.valueOf(System.currentTimeMillis());
-						capability.syncPlayerVariables(entity);
-					});
-					if (entity instanceof ServerPlayer sp) ChatBroadcastPacket.broadcast(sp);
-				}
-			});
-			MortysiumsmpMod.queueServerWork(200, () -> {
-				if ((" " + text + " ").equals((entity.getCapability(MortysiumsmpModVariables.PLAYER_VARIABLES_CAPABILITY, null).orElseGet(MortysiumsmpModVariables.PlayerVariables::new)).message3)) {
-					entity.getCapability(MortysiumsmpModVariables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
-						capability.exibindo_chat3 = false;
-						capability.message3 = "";
-						capability.fade_chat3 = "";
-						capability.syncPlayerVariables(entity);
-					});
-					if (entity instanceof ServerPlayer sp) ChatBroadcastPacket.broadcast(sp);
-				}
-			});
-		}
-	}
+    private static java.util.List<String> splitMessage(String text) {
+        String normalized = text.trim().replaceAll("\\s+", " ");
+        java.util.List<String> parts = new java.util.ArrayList<>();
+        if (normalized.isEmpty()) return parts;
+
+        int start = 0;
+        while (start < normalized.length()) {
+            int end = Math.min(start + MESSAGE_CHUNK_SIZE, normalized.length());
+            if (end < normalized.length()) {
+                int breakAt = normalized.lastIndexOf(' ', end);
+                if (breakAt > start) end = breakAt;
+            }
+            String part = normalized.substring(start, end).trim();
+            if (!part.isEmpty()) parts.add(" " + part + " ");
+            start = end;
+            while (start < normalized.length() && normalized.charAt(start) == ' ') start++;
+        }
+        return parts;
+    }
+
+    private static void enqueueChatPart(Entity entity, String part) {
+        // ID gerado ANTES do shift, único por jogador, sem depender de tempo
+        final long msgId = nextId(entity.getUUID());
+
+        entity.getCapability(MortysiumsmpModVariables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(cap -> {
+            shiftMessagesDown(cap);
+            cap.message       = part;
+            cap.exibindo_chat = true;
+            // Guardamos o ID numérico como string no fade_chat — só usado internamente no servidor
+            cap.fade_chat     = String.valueOf(msgId);
+            cap.syncPlayerVariables(entity);
+        });
+        broadcast(entity);
+
+        MortysiumsmpMod.queueServerWork(CLEAR_DELAY_TICKS, () -> {
+            entity.getCapability(MortysiumsmpModVariables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(cap -> {
+                String idStr = String.valueOf(msgId);
+                int slot = findSlotById(cap, idStr);
+                if (slot != -1) {
+                    clearSlot(cap, slot);
+                    cap.syncPlayerVariables(entity);
+                    broadcast(entity);
+                }
+            });
+        });
+    }
+
+    private static void shiftMessagesDown(MortysiumsmpModVariables.PlayerVariables cap) {
+        cap.message3       = cap.message2;
+        cap.exibindo_chat3 = cap.exibindo_chat2;
+        cap.fade_chat3     = cap.fade_chat2;
+
+        cap.message2       = cap.message;
+        cap.exibindo_chat2 = cap.exibindo_chat;
+        cap.fade_chat2     = cap.fade_chat;
+    }
+
+    private static int findSlotById(MortysiumsmpModVariables.PlayerVariables cap, String idStr) {
+        if (idStr.equals(cap.fade_chat))  return 1;
+        if (idStr.equals(cap.fade_chat2)) return 2;
+        if (idStr.equals(cap.fade_chat3)) return 3;
+        return -1;
+    }
+
+    private static void clearSlot(MortysiumsmpModVariables.PlayerVariables cap, int slot) {
+        switch (slot) {
+            case 1 -> { cap.exibindo_chat  = false; cap.message  = ""; cap.fade_chat  = ""; }
+            case 2 -> { cap.exibindo_chat2 = false; cap.message2 = ""; cap.fade_chat2 = ""; }
+            case 3 -> { cap.exibindo_chat3 = false; cap.message3 = ""; cap.fade_chat3 = ""; }
+        }
+    }
+
+    private static void broadcast(Entity entity) {
+        if (entity instanceof ServerPlayer sp) ChatBroadcastPacket.broadcast(sp);
+    }
 }

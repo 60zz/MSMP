@@ -25,26 +25,18 @@ public class EntraRemoveChatsProcedure {
 	private static void execute(@Nullable Event event, Entity entity) {
 		if (entity == null)
 			return;
-		{
-			boolean _setval = false;
-			entity.getCapability(MortysiumsmpModVariables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
-				capability.exibindo_chat = _setval;
-				capability.syncPlayerVariables(entity);
-			});
-		}
-		{
-			boolean _setval = false;
-			entity.getCapability(MortysiumsmpModVariables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
-				capability.exibindo_chat2 = _setval;
-				capability.syncPlayerVariables(entity);
-			});
-		}
-		{
-			boolean _setval = false;
-			entity.getCapability(MortysiumsmpModVariables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
-				capability.exibindo_chat3 = _setval;
-				capability.syncPlayerVariables(entity);
-			});
-		}
+
+		entity.getCapability(MortysiumsmpModVariables.PLAYER_VARIABLES_CAPABILITY, null).ifPresent(capability -> {
+			capability.exibindo_chat = false;
+			capability.exibindo_chat2 = false;
+			capability.exibindo_chat3 = false;
+			capability.message = "";
+			capability.message2 = "";
+			capability.message3 = "";
+			capability.fade_chat = "";
+			capability.fade_chat2 = "";
+			capability.fade_chat3 = "";
+			capability.syncPlayerVariables(entity);
+		});
 	}
 }
